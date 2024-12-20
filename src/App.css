@@ -1,0 +1,116 @@
+.App {
+  display: flex;
+  flex-direction: row;
+  justify-content: center; 
+  align-items: center;
+  width: 100vh;
+  height: 100vh; 
+ 
+}
+
+.chessBoardStyle
+{
+  border-width: 10px;
+  border-radius: 10px;
+  border-color: brown;
+
+} 
+
+.rowStyle
+{
+  display: flex;
+  flex-direction: row;
+} 
+.creamBoxStyle
+{
+  height: 70px;
+  width: 70px;
+  background-color:#f7fbc2;
+  display: flex;
+  flex-direction: row;
+  justify-content: center; 
+  align-items: center;
+}
+.greenBoxStyle
+{
+  height: 70px;
+  width: 70px;
+  background-color:#1b500f;
+  display: flex;
+  flex-direction: row;
+  justify-content: center; 
+  align-items: center;
+}
+
+.coinsStyleBlack
+{
+  font-size: 40px;
+  cursor: pointer;
+}
+
+.coinsStyleWhite
+{
+  color: gray;
+  font-size: 40px;
+  cursor: pointer;
+}
+
+@media screen and (max-width : 620px)
+{
+  .App {
+    display: flex;
+    flex-direction: row;
+    justify-content: center; 
+    align-items: center;
+    width: 100vh;
+    height: 100vh; 
+   
+  }
+  
+  .chessBoardStyle
+  {
+    border-width: 10px;
+    border-radius: 10px;
+    border-color: brown;
+  
+  } 
+  
+  .rowStyle
+  {
+    display: flex;
+    flex-direction: row;
+  } 
+  .creamBoxStyle
+  {
+    height: 40px;
+    width: 40px;
+    background-color:#f7fbc2;
+    display: flex;
+    flex-direction: row;
+    justify-content: center; 
+    align-items: center;
+  }
+  .greenBoxStyle
+  {
+    height: 40px;
+    width: 40px;
+    background-color:#1b500f;
+    display: flex;
+    flex-direction: row;
+    justify-content: center; 
+    align-items: center;
+  }
+  
+  .coinsStyleBlack
+  {
+    font-size: 25px;
+    cursor: pointer;
+  }
+  
+  .coinsStyleWhite
+  {
+    color: gray;
+    font-size: 25px;
+    cursor: pointer;
+  }
+}
