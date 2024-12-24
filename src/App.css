@@ -4,15 +4,12 @@
   justify-content: center; 
   align-items: center;
   width: 100vh;
-  height: 100vh; 
- 
+  height: 100vh;
 }
-
 .chessBoardStyle
 {
   border-width: 10px;
-  border-radius: 10px;
-  border-color: brown;
+  border: black solid;
 
 } 
 
@@ -73,6 +70,7 @@
     align-items: center;
     width: 100%;
     height: 100%; 
+    margin-top: 20px;
    
   }
   
