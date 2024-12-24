@@ -36,6 +36,52 @@ export default function ChessBoard()
      
     }
 
+    function pawnBlackOpponentsCheck(row,column,coinColor,pawnList)
+    {
+      let opponentColor1 =coinColor;
+      let opponentColor2 = coinColor;
+      if(row-1 >=0 && column-1>=0)
+      {
+        opponentColor1 = checkOpponent(row-1,column-1);
+      }
+      if(row-1>=0 && column+1<=7)
+      {
+        opponentColor2 = checkOpponent(row-1,column+1);
+      }
+      if(Boolean(opponentColor1)=== true &&  opponentColor1!=coinColor)
+        {
+          pawnList.push([row-1,column-1]);
+        }
+        if(Boolean(opponentColor2)===true && opponentColor2!=coinColor)
+        {
+          pawnList.push([row-1,column+1]);
+        }
+    }
+
+    function pawnwhiteOpponentCheck(row,column,coinColor,pawnList)
+    {
+      let whiteOpponnentColor1 =coinColor;
+      let whiteOpponnentColor2 = coinColor;
+      if(row<=7 && column>=0)
+      {
+        whiteOpponnentColor1 = checkOpponent(row+1,column-1);
+      }
+      if(row<=7 && column<=7)
+      {
+        whiteOpponnentColor2 = checkOpponent(row+1,column+1);
+      }
+      
+      if( Boolean(whiteOpponnentColor1)=== true && coinColor!=whiteOpponnentColor1)
+      {
+       pawnList.push([row+1,column-1]);
+      }
+      if( Boolean(whiteOpponnentColor2) === true && coinColor!=whiteOpponnentColor2)
+        {
+         pawnList.push([row+1,column+1]);
+        }
+  
+    }
+
     function pawnHandler(row,column,coinColor)
     {
       if(coinColor === 'black')
@@ -43,53 +89,58 @@ export default function ChessBoard()
           if(row === 6)
           {
           let pawnList = [];
-          let indicesList =[]
-          indicesList.push(row-1);
-          indicesList.push(column);
-          pawnList.push(indicesList);
-          indicesList =[]
-          indicesList.push(row-2);
-          indicesList.push(column);
-          pawnList.push(indicesList);
-          console.log(pawnList);
+          pawnBlackOpponentsCheck(row,column,coinColor,pawnList);
+          if(chessBoardList[row-1][column] === null)
+          {
+            pawnList.push([row-1,column]);
+          }
+          if(chessBoardList[row-2][column] === null)
+            {
+              pawnList.push([row-2,column]);
+            }
+          console.log("Pawn List: ",pawnList);
           setPositionsList(pawnList);
           } 
           else
           {
-            let  pawnList = [];
-            let indicesList =[];
-            indicesList.push(row-1);
-            indicesList.push(column);
-            pawnList.push(indicesList);
-            console.log(pawnList);
+            let  pawnList = []; 
+            pawnBlackOpponentsCheck(row,column,coinColor,pawnList);
+            if(chessBoardList[row-1][column]===null)
+            {
+              pawnList.push([row-1,column]);
+            }
+            console.log("Pawn List: ",pawnList);
             setPositionsList(pawnList);
-          }
-          
+            }
         }
+          
         else
         {
           if(row === 1)
             {
-            let pawnList = []
-            let indicesList =[]
-            indicesList.push(row+1);
-            indicesList.push(column);
-            pawnList.push(indicesList);
-            indicesList =[]
-            indicesList.push(row+2);
-            indicesList.push(column);
-            pawnList.push(indicesList);
-            console.log(pawnList);
+            let pawnList = [];
+            pawnwhiteOpponentCheck(row,column,coinColor,pawnList);
+            if(chessBoardList[row+1][column]=== null)
+            {
+              pawnList.push([row+1,column]);
+            }
+            if(chessBoardList[row+2][column]===null)
+            {
+              pawnList.push([row+2,column]);
+            }
+            console.log("Pawn List: ",pawnList);
             setPositionsList([...pawnList]);
             } 
             else
             {
               let pawnList = []
-              let indicesList =[]
-              indicesList.push(row+1);
-              indicesList.push(column);
-              pawnList.push(indicesList);
-              setPositionsList([...pawnList]);
+              pawnwhiteOpponentCheck(row,column,coinColor,pawnList);
+              if(row+1<=7 && chessBoardList[row+1][column]===null)
+              {
+                pawnList.push([row+1,column]);
+              }
+              console.log("Pawn List: ",pawnList);
+              setPositionsList(pawnList);
             }
         }
     }
@@ -105,8 +156,7 @@ export default function ChessBoard()
       let opponentColor = checkOpponent(row,column);
       while(column<=7 && (chessBoardList[row][column] === null || coinColor != opponentColor))
       {
-        opponentColor = checkOpponent(row,column);
-        if(opponentColor=== true && coinColor != opponentColor)
+        if(Boolean(opponentColor)=== true && coinColor != opponentColor)
         {
           let innerList =[];
           innerList.push(row);
@@ -121,6 +171,10 @@ export default function ChessBoard()
         innerList.push(column);
         rookList.push(innerList);
         column = column+1;
+        if(column<=7)
+        {
+          opponentColor = checkOpponent(row,column);
+        }
         }
       }
       }
@@ -133,9 +187,8 @@ export default function ChessBoard()
         console.log("opponent :",opponentColor);
         while( row<=7 && (chessBoardList[row][column] === null || coinColor != opponentColor))
           {
-            opponentColor = checkOpponent(row,column);
             // console.log("opponent color in while loop:",opponentColor);
-            if(opponentColor === true && coinColor != opponentColor)
+            if(Boolean(opponentColor)=== true && coinColor != opponentColor)
               {
                 console.log("opponent color break: ",opponentColor);
                 let innerList =[];
@@ -151,6 +204,10 @@ export default function ChessBoard()
             innerList.push(column);
             rookList.push(innerList);
             row = row+1;
+            if(row<=7)
+            {
+              opponentColor = checkOpponent(row,column);
+            }
             }
             
           }
@@ -163,8 +220,7 @@ export default function ChessBoard()
         let opponentColor = checkOpponent(row,column);
         while(row>=0 && (chessBoardList[row][column] === null || coinColor != opponentColor))
           {
-            opponentColor = checkOpponent(row,column);
-            if(opponentColor === true && coinColor != opponentColor)
+            if(Boolean(opponentColor)=== true && coinColor != opponentColor)
               {
                 console.log("opponent: ",opponentColor);
                 let innerList =[];
@@ -181,6 +237,10 @@ export default function ChessBoard()
               innerList.push(column);
               rookList.push(innerList);
               row = row-1;
+              if(row>=0)
+              {
+                opponentColor = checkOpponent(row,column);
+              }
             }
           }
       }
@@ -190,10 +250,9 @@ export default function ChessBoard()
       if(column>=0)
       {
         let opponentColor = checkOpponent(row,column);
-        while(column>=0 && (chessBoardList[row][column] === null || coinColor != opponentColor))
+        while((column>=0 && column<=7 && row>=0 && row<=7) && ( chessBoardList[row][column] === null || (Boolean(opponentColor)===true && coinColor != opponentColor)))
           {
-            opponentColor = checkOpponent(row,column);
-            if(opponentColor === true && coinColor != opponentColor)
+            if(Boolean(opponentColor)=== true && coinColor != opponentColor)
               {
                 let innerList =[];
                 innerList.push(row);
@@ -208,33 +267,272 @@ export default function ChessBoard()
             innerList.push(column);
             rookList.push(innerList);
             column = column-1;
+            if(column>=0)
+            {
+              opponentColor = checkOpponent(row,column);
+            }
+            
             }
           }
       }
         setPositionsList([...rookList]);
         console.log("Elephant: ",rookList);
+        return rookList;
     }
 
-    function knightHandler(row,column)
+    function knightHandler(row,column,coinColor)
     {
       const presentColumn = column;
       const presentRow = row;
-      while(column<=7 && row<=7 && chessBoardList[row][column]===null)
+      let pawnList =[];
+      let opponentColor = coinColor;
+      if(column+2<=7 && row-1>=0)
       {
-
+        opponentColor = checkOpponent(row-1,column+3);
+        if(chessBoardList[row-1][column+3]===null || (coinColor!=opponentColor && Boolean(opponentColor)))
+          {
+            pawnList.push([row-1,column+2]);
+          }
       }
+      if(column+2<=7 && row+1<=7)
+      {
+        opponentColor = checkOpponent(row+1,column+2);
+        if(chessBoardList[row+1][column+3]===null || (coinColor!=opponentColor && Boolean(opponentColor)))
+        {
+          pawnList.push([row+1,column+2])
+        }
+      }
+      if(column-2>=0 && row-1>=0)
+      {
+        opponentColor = checkOpponent(row-1,column-2);
+        if(chessBoardList[row-1][column-2]===null || (coinColor != opponentColor && Boolean(opponentColor)))
+        {
+          pawnList.push([row-1,column-2]);
+        }
+      }
+      if(column-2>=0 && row+1<=7)
+      {
+        opponentColor = checkOpponent(row+1,column-2);
+        if(chessBoardList[row+1][column-2]===null || (coinColor != opponentColor && Boolean(opponentColor)))
+        {
+          pawnList.push([row+1,column-2]);
+        }
+      }
+      if(row+2<=7 && column+1<=7)
+      {
+        opponentColor = checkOpponent(row+2,column+1);
+        if(chessBoardList[row+2][column+1]===null || (coinColor != opponentColor && Boolean(opponentColor)))
+        {
+          pawnList.push([row+2,column+1]);
+        }
+      }
+      if(row+2<=7 && column-1>=0)
+      {
+        opponentColor = checkOpponent(row+2,column-1);
+        if(chessBoardList[row+2][column-1]===null || (coinColor!= opponentColor && Boolean(opponentColor)))
+        {
+          pawnList.push([row+2,column-1])
+        }
+      }
+      if(row-2>=0 && column-1>=0)
+      {
+        opponentColor =checkOpponent(row-2,column-1);
+        if(chessBoardList[row-2][column-1]===null || (coinColor!= opponentColor && Boolean(opponentColor)))
+        {
+          pawnList.push([row-2,column-1])
+        }
+      }
+      if(row-2>=0 && column+1<=7)
+      {
+        opponentColor = checkOpponent(row-2,column+1);
+        if(chessBoardList[row-2][column+1]===null || (coinColor!= opponentColor && Boolean(opponentColor)))
+          {
+            pawnList.push([row-2,column+1])
+          }
+      }
+      console.log("Knight Pos: ",pawnList);
+      setPositionsList(pawnList);
+      
     }
 
-    function bishopHandler(row,column)
+    function bishopHandler(row,column,coinColor)
     {
+      let bishopList = [];
+      const presentColumn = column;
+      const presentRow = row;
+      row = presentRow-1;
+      column = presentColumn -1;
+      let opponentColor = coinColor;
+      if(row>=0 && row<=7 && column>=0 && column<=7)
+      {
+        while((row>=0 && column>=0 && chessBoardList[row][column]===null) || (Boolean(opponentColor)===true && coinColor!=opponentColor))
+        {
+          if(Boolean(opponentColor)=== true && coinColor!=opponentColor)
+          {
+            bishopList.push([row,column]);
+            break;
+          }
+          else
+          {
+            bishopList.push([row,column]);
+            row =row-1;
+            column = column-1;
+            if(row>=0 && column>=0)
+            {
+              opponentColor = checkOpponent(row,column);
+            }
+            
+          }
+         
+        }
+      }
+      row = presentRow-1;
+      column = presentColumn +1;
+      opponentColor = coinColor;
+      if(row>=0 && row<=7 && column>=0 && column<=7)
+      {
+        while((row>=0 && column<=7 && row<=7 && column>=0 && chessBoardList[row][column]===null) || (Boolean(opponentColor)===true && coinColor!=opponentColor))
+        {
+          if(Boolean(opponentColor)=== true && coinColor!=opponentColor)
+            {
+              bishopList.push([row,column]);
+              break;
+            }
+          else{
+            bishopList.push([row,column]);
+            row =row-1;
+            column = column+1;
+            console.log("Bishop Column Row Check: ",row,column);
+            if(row>=0 && column<=7)
+            {
+              opponentColor = checkOpponent(row,column);
+            }
+           
+          }
+          
+        }
+      }
+      row = presentRow+1;
+      column = presentColumn-1;
+      opponentColor = coinColor;
+      if(row>=0 && row<=7 && column>=0 && column<=7)
+      {
+        while((row<=7 && row>=0 && column>=0 && column<=7 && chessBoardList[row][column]===null) || (Boolean(opponentColor)===true && coinColor!=opponentColor))
+        {
+          if(Boolean(opponentColor)=== true && coinColor!=opponentColor)
+            {
+              bishopList.push([row,column]);
+              break;
+            }
+          else{
+            bishopList.push([row,column]);
+            row =row+1;
+            column = column-1;
+            if(row<=7 && column>=0)
+            {
+              opponentColor = checkOpponent(row,column);
+            }
+          }
+          
+        }
+      }
+      row = presentRow+1;
+      column = presentColumn+1;
+      opponentColor = coinColor;
+      if(row>=0 && row<=7 && column>=0 && column<=7)
+      {
+        opponentColor = checkOpponent(row,column);
+        while((row<=7 && column>=0 && row>=0 && column<=7 && chessBoardList[row][column]===null) || (Boolean(opponentColor)===true && coinColor!=opponentColor))
+        {
+         
+          if(Boolean(opponentColor)=== true && coinColor!=opponentColor)
+            {
+              bishopList.push([row,column]);
+              break;
+            }
+          else{
+            bishopList.push([row,column]);
+            row =row+1;
+            column = column+1;
+            if(row<=7 && column<=7)
+            {
+              opponentColor = checkOpponent(row,column);
+            }
+            console.log("Bishop Row column check:",row,column);
+            
+          }
+          
+        }
+      }
+      console.log("Bishop List: ",bishopList);
+      setPositionsList(bishopList);
+      return bishopList;
 
     }
 
-    function queenHandler(row,column)
+    function queenHandler(row,column,coinColor)
     {
-
+      const bishopList = bishopHandler(row,column,coinColor);
+      const rookList = RookHandler(row,column,coinColor);
+      const queenList = bishopList.concat(rookList);
+      console.log("Queen List: ",queenList);
+      setPositionsList(queenList);
     }
 
+    function kingHandler(row,column,coinColor)
+    {
+        let kingList =[];
+        if(row-1>=0 || (row-1>=0 && column+1 <=7) || (row-1>=0 && column-1>=0))
+        {
+          let opponentColor = checkOpponent(row-1,column);
+          if(chessBoardList[row-1][column]===null || (Boolean(opponentColor) === true && opponentColor!=coinColor))
+          {
+            kingList.push([row-1,column])
+          }
+          opponentColor = checkOpponent(row-1,column+1);
+          if(chessBoardList[row-1][column+1]===null || (Boolean(opponentColor) === true && opponentColor!=coinColor))
+          {
+            kingList.push([row-1,column+1])
+          }
+          opponentColor = checkOpponent(row-1,column-1);
+          if(chessBoardList[row-1][column-1]===null || (Boolean(opponentColor) === true && opponentColor!=coinColor))
+          {
+            kingList.push([row-1,column-1])
+          }
+        }
+        if(row+1<=7 || (row+1<=7 && column+1<=7) ||(row+1<=7 && column-1>=7))
+        {
+          let opponentColor = checkOpponent(row+1,column);
+          if(chessBoardList[row+1][column]===null || (Boolean(opponentColor) === true && opponentColor!=coinColor))
+          {
+            kingList.push([row-1,column]);
+          }
+          opponentColor = checkOpponent(row+1,column+1);
+          if(chessBoardList[row+1][column+1]===null || (Boolean(opponentColor) === true && opponentColor!=coinColor))
+          {
+            kingList.push([row-1,column+1]);
+          }
+          opponentColor = checkOpponent(row+1,column-1);
+          if(chessBoardList[row+1][column-1]===null || (Boolean(opponentColor) === true && opponentColor!=coinColor))
+          {
+            kingList.push([row-1,column-1]);
+          }
+        }
+        if(column+1<=7 || column-1>=0)
+        {
+          let opponentColor = coinColor;
+          if(chessBoardList[row][column-1]===null ||(Boolean(opponentColor)=== true && opponentColor!=coinColor))
+          {
+            kingList.push([row,column-1]);
+          }
+          opponentColor = coinColor;
+          if(chessBoardList[row][column+1]===null ||(Boolean(opponentColor)=== true && opponentColor!=coinColor))
+          {
+            kingList.push([row,column+1]);
+          }
+        }
+        setPositionsList(kingList);
+    }
     function handlePosition(coinType,row,column,coinColor)
     {
       const presentColumn = column;
@@ -262,7 +560,7 @@ export default function ChessBoard()
         }
         else if(coinType === '♛')
         {
-          knightHandler(row,column,coinColor);  
+          kingHandler(row,column,coinColor);  
         }
     }
 
@@ -310,13 +608,27 @@ export default function ChessBoard()
         if(coinColor === 'white' && whitePlayerFlag === true)
         {
         console.log("Yes True!!!");
-        changingCoins(index,boxindex);
+        positionsList.map((value,pos)=>{
+          if(value[0]===index && value[1]===boxindex)
+          {
+            console.log("condition Satisfied!!")
+            changingCoins(index,boxindex);
+            setPositionsList([]);
+          }
+        })
+        
         
         }
         if(coinColor === 'black' && whitePlayerFlag === false)
         { 
-          changingCoins(index,boxindex);
-
+          positionsList.map((value,pos)=>{
+            if(value[0]===index && value[1]===boxindex)
+            {
+              console.log("Condition Satisfied!!!");
+              changingCoins(index,boxindex);
+              setPositionsList([]);
+            }
+          })
         }
       }
      }
@@ -368,6 +680,14 @@ export default function ChessBoard()
                               }} key={boxindex}>
                                {chessBoardList[index][boxindex] ? <p className={chessBoardList[index][boxindex][Object.keys(chessBoardList[index][boxindex])[0]] === "white" ? 'coinsStyleWhite':'coinsStyleBlack'} onClick={()=> null}>
                                 {Object.keys(chessBoardList[index][boxindex])[0]}</p> : <p>{chessBoardList[index][boxindex]}</p>}
+                                {
+                                  positionsList.map((value,pos)=>{
+                                    if(value[0]===index && value[1]===boxindex)
+                                    {
+                                      return <div className="moveStyle"></div>
+                                    }
+                                  })
+                                }
                               </div> 
                              } 
 
@@ -375,18 +695,43 @@ export default function ChessBoard()
 
                               if(index%2 === 0 && boxindex%2 !== 0 ) {return <div className='greenBoxStyle' onClick={()=>{handlePickPlace(index,boxindex)
                               }}>{chessBoardList[index][boxindex] ? <p className={chessBoardList[index][boxindex][Object.keys(chessBoardList[index][boxindex])[0]] === 'white' ? 'coinsStyleWhite':'coinsStyleBlack'} onClick={()=> null} >
-                                {Object.keys(chessBoardList[index][boxindex])[0]}</p> : <p onClick={()=> null}>{chessBoardList[index][boxindex]}</p>}</div> }
+                                {Object.keys(chessBoardList[index][boxindex])[0]}</p> : <p onClick={()=> null}>{chessBoardList[index][boxindex]}</p>}
+                                {
+                                  positionsList.map((value,pos)=>{
+                                    if(value[0]===index && value[1]===boxindex)
+                                    {
+                                      return <div className="moveStyle"></div>
+                                    }
+                                  })
+                                }
+                                </div> }
 
                               if(index%2 !== 0 && boxindex%2 === 0) {return <div className='greenBoxStyle' onClick={()=>{handlePickPlace(index,boxindex)
                               }}>
                                 {chessBoardList[index][boxindex] ? <p className={chessBoardList[index][boxindex][Object.keys(chessBoardList[index][boxindex])[0]] === 'white' ? 'coinsStyleWhite':'coinsStyleBlack'} onClick={()=> null}>
                                   {Object.keys(chessBoardList[index][boxindex])[0]}</p> : <p onClick={()=> null}>{chessBoardList[index][boxindex]}</p>}
+                                  {
+                                  positionsList.map((value,pos)=>{
+                                    if(value[0]===index && value[1]===boxindex)
+                                    {
+                                      return <div className="moveStyle"></div>
+                                    }
+                                  })
+                                }
                               </div> }
 
                               if(index%2 !== 0 && boxindex%2 !== 0 ) {return <div className='creamBoxStyle' onClick={()=>{handlePickPlace(index,boxindex)
                               }}>
                                 {chessBoardList[index][boxindex] ? <p className={chessBoardList[index][boxindex][Object.keys(chessBoardList[index][boxindex])[0]] === 'white' ? 'coinsStyleWhite':'coinsStyleBlack'} onClick={()=> null}>
                                   {Object.keys(chessBoardList[index][boxindex])[0]}</p> : <p onClick={()=> null}>{chessBoardList[index][boxindex]}</p>}
+                                  {
+                                  positionsList.map((value,pos)=>{
+                                    if(value[0]===index && value[1]===boxindex)
+                                    {
+                                      return <div className="moveStyle"></div>
+                                    }
+                                  })
+                                }
                               </div> }
 
                             })
