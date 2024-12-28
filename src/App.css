@@ -60,6 +60,19 @@
   border-radius: 10px;
   border-width: 2px;
 }
+.whiteCoinShadow
+{
+  color: gray;
+  font-size: 40px;
+  cursor: pointer;
+  text-shadow: 5px 5px 8px  brown;
+}
+.blackCoinShadow
+{
+  font-size: 40px;
+  cursor: pointer;
+  text-shadow: 5px 5px 8px brown;
+}
 
 @media screen and (max-width : 620px)
 {
@@ -127,5 +140,18 @@
   border: black solid;
   background-color: brown;
   border-width: 1px;
+}
+.whiteCoinShadow
+{
+  color: gray;
+  font-size: 40px;
+  cursor: pointer;
+  text-shadow: 5px 5px 5px 5px brown;
+}
+.blackCoinShadow
+{
+  font-size: 40px;
+  cursor: pointer;
+  text-shadow: 5px 5px 5px 5px brown;
 }
 }

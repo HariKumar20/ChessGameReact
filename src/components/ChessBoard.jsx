@@ -3,7 +3,7 @@ import { useState } from "react";
 import "../App.css";
 export default function ChessBoard()
 {  
-    const [chessBoardList,setChessBoardList] = useState([[{'♜':'white'},{'♞':'white'},{'♝':'white'},{'♚':'white'},{'♛':'white'},{'♝':'white'},{'♞':'white'},{'♜':'white'}], [{"♟":"white"},{"♟":"white"},{"♟":"white"},{"♟":"white"},{"♟":"white"},{"♟":"white"},{"♟":"white"},{"♟":'white'}],[null, null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null],[null, null,null,null,null,null,null,null],[{"♟":"black"},{"♟":"black"},{"♟":"black"},{"♟":"black"},{"♟":"black"},{"♟":"black"},{"♟":"black"},{"♟":"black"}],[{'♜':"black"},{'♞':"black"},{'♝':"black"},{'♚':"black"},{'♛':"black"},{'♝':"black"},{'♞':"black"},{'♜':"black"}]]);
+    const [chessBoardList,setChessBoardList] = useState([[{'♜':'white'},{'♞':'white'},{'♝':'white'},{'♛':'white'},{'♚':'white'},{'♝':'white'},{'♞':'white'},{'♜':'white'}], [{"♟":"white"},{"♟":"white"},{"♟":"white"},{"♟":"white"},{"♟":"white"},{"♟":"white"},{"♟":"white"},{"♟":'white'}],[null, null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null],[null, null,null,null,null,null,null,null],[{"♟":"black"},{"♟":"black"},{"♟":"black"},{"♟":"black"},{"♟":"black"},{"♟":"black"},{"♟":"black"},{"♟":"black"}],[{'♜':"black"},{'♞':"black"},{'♝':"black"},{'♛':"black"},{'♚':"black"},{'♝':"black"},{'♞':"black"},{'♜':"black"}]]);
     const [whitePlayerFlag ,setWhitePlayerFlag] = useState(true);
     const [blackPlayerFlag ,setBlackPlayerFlag] = useState(false);
     const [positionsList , setPositionsList] = useState([]);
@@ -33,6 +33,29 @@ export default function ChessBoard()
       console.log("Opponent Color in checkOpponent Function:",opponentColor);
       return opponentColor;
       }
+     
+    }
+
+    function showPlayer(index,boxindex)
+    {
+      let coinColor = chessBoardList[index][boxindex][Object.keys(chessBoardList[index][boxindex])[0]];
+      if(whitePlayerFlag === true && coinColor === 'white')
+        {
+          return 'whiteCoinShadow';
+        }
+      if(whitePlayerFlag === false && coinColor === 'black')
+          {
+            return 'blackCoinShadow';
+          }
+      if(coinColor === "white")
+      {
+        return 'coinsStyleWhite';
+      }
+      if(coinColor === "black")
+        {
+          return 'coinsStyleBlack';
+        } 
+      
      
     }
 
@@ -675,64 +698,23 @@ export default function ChessBoard()
                    return (<div><div key={index} className="rowStyle">
                         {
                             value.map((box,boxindex)=>{
-                             if( index%2 === 0 && boxindex%2 ===0 ){
-                              return <div className='creamBoxStyle' onClick={()=>{ handlePickPlace(index,boxindex)
+                              return <div className={((index%2===0 && boxindex%2===0)||(index%2!==0 && boxindex%2!==0) ? 'creamBoxStyle':'greenBoxStyle')} onClick={()=>{ handlePickPlace(index,boxindex)
                               }} key={boxindex}>
-                               {chessBoardList[index][boxindex] ? <p className={chessBoardList[index][boxindex][Object.keys(chessBoardList[index][boxindex])[0]] === "white" ? 'coinsStyleWhite':'coinsStyleBlack'} onClick={()=> null}>
+                               {chessBoardList[index][boxindex] ? <p className={showPlayer(index,boxindex)} onClick={()=> null}>
                                 {Object.keys(chessBoardList[index][boxindex])[0]}</p> : <p>{chessBoardList[index][boxindex]}</p>}
                                 {
                                   positionsList.map((value,pos)=>{
                                     if(value[0]===index && value[1]===boxindex)
                                     {
-                                      return <div className="moveStyle"></div>
+                                      let coinColor = checkOpponent(pickPosList[0],pickPosList[1]);
+                                      if ((whitePlayerFlag === true && coinColor === 'white') || (whitePlayerFlag === false && coinColor==='black'))
+                                      {
+                                        return <div className="moveStyle"></div>
+                                      }
                                     }
                                   })
                                 }
-                              </div> 
-                             } 
-
-                            //  ########
-
-                              if(index%2 === 0 && boxindex%2 !== 0 ) {return <div className='greenBoxStyle' onClick={()=>{handlePickPlace(index,boxindex)
-                              }}>{chessBoardList[index][boxindex] ? <p className={chessBoardList[index][boxindex][Object.keys(chessBoardList[index][boxindex])[0]] === 'white' ? 'coinsStyleWhite':'coinsStyleBlack'} onClick={()=> null} >
-                                {Object.keys(chessBoardList[index][boxindex])[0]}</p> : <p onClick={()=> null}>{chessBoardList[index][boxindex]}</p>}
-                                {
-                                  positionsList.map((value,pos)=>{
-                                    if(value[0]===index && value[1]===boxindex)
-                                    {
-                                      return <div className="moveStyle"></div>
-                                    }
-                                  })
-                                }
-                                </div> }
-
-                              if(index%2 !== 0 && boxindex%2 === 0) {return <div className='greenBoxStyle' onClick={()=>{handlePickPlace(index,boxindex)
-                              }}>
-                                {chessBoardList[index][boxindex] ? <p className={chessBoardList[index][boxindex][Object.keys(chessBoardList[index][boxindex])[0]] === 'white' ? 'coinsStyleWhite':'coinsStyleBlack'} onClick={()=> null}>
-                                  {Object.keys(chessBoardList[index][boxindex])[0]}</p> : <p onClick={()=> null}>{chessBoardList[index][boxindex]}</p>}
-                                  {
-                                  positionsList.map((value,pos)=>{
-                                    if(value[0]===index && value[1]===boxindex)
-                                    {
-                                      return <div className="moveStyle"></div>
-                                    }
-                                  })
-                                }
-                              </div> }
-
-                              if(index%2 !== 0 && boxindex%2 !== 0 ) {return <div className='creamBoxStyle' onClick={()=>{handlePickPlace(index,boxindex)
-                              }}>
-                                {chessBoardList[index][boxindex] ? <p className={chessBoardList[index][boxindex][Object.keys(chessBoardList[index][boxindex])[0]] === 'white' ? 'coinsStyleWhite':'coinsStyleBlack'} onClick={()=> null}>
-                                  {Object.keys(chessBoardList[index][boxindex])[0]}</p> : <p onClick={()=> null}>{chessBoardList[index][boxindex]}</p>}
-                                  {
-                                  positionsList.map((value,pos)=>{
-                                    if(value[0]===index && value[1]===boxindex)
-                                    {
-                                      return <div className="moveStyle"></div>
-                                    }
-                                  })
-                                }
-                              </div> }
+                              </div>
 
                             })
                         }
