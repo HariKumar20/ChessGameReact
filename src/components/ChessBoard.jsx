@@ -312,7 +312,7 @@ export default function ChessBoard()
       if(column+2<=7 && row-1>=0)
       {
         opponentColor = checkOpponent(row-1,column+3);
-        if(chessBoardList[row-1][column+3]===null || (coinColor!=opponentColor && Boolean(opponentColor)))
+        if(chessBoardList[row-1][column+2]===null || (coinColor!=opponentColor && Boolean(opponentColor)))
           {
             pawnList.push([row-1,column+2]);
           }
@@ -320,7 +320,7 @@ export default function ChessBoard()
       if(column+2<=7 && row+1<=7)
       {
         opponentColor = checkOpponent(row+1,column+2);
-        if(chessBoardList[row+1][column+3]===null || (coinColor!=opponentColor && Boolean(opponentColor)))
+        if(chessBoardList[row+1][column+2]===null || (coinColor!=opponentColor && Boolean(opponentColor)))
         {
           pawnList.push([row+1,column+2])
         }
