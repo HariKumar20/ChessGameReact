@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useState } from "react"; 
 import "../App.css";
+import CoinsDisplay from "./CoinsDisplay";
 export default function ChessBoard()
 {  
     const [chessBoardList,setChessBoardList] = useState([[{'♜':'white'},{'♞':'white'},{'♝':'white'},{'♛':'white'},{'♚':'white'},{'♝':'white'},{'♞':'white'},{'♜':'white'}], [{"♟":"white"},{"♟":"white"},{"♟":"white"},{"♟":"white"},{"♟":"white"},{"♟":"white"},{"♟":"white"},{"♟":'white'}],[null, null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null],[null, null,null,null,null,null,null,null],[{"♟":"black"},{"♟":"black"},{"♟":"black"},{"♟":"black"},{"♟":"black"},{"♟":"black"},{"♟":"black"},{"♟":"black"}],[{'♜':"black"},{'♞':"black"},{'♝':"black"},{'♛':"black"},{'♚':"black"},{'♝':"black"},{'♞':"black"},{'♜':"black"}]]);
@@ -9,7 +10,8 @@ export default function ChessBoard()
     const [positionsList , setPositionsList] = useState([]);
     const [pickPosList,setPickPosList] =useState([null,null])
     const [coinPickFlag ,setCoinPickFlag] = useState(false);
-    
+    const [showWhiteCoinsList,setShowWhiteCoinsList] =useState([]);
+    const [showBlackCoinsList,setShowBlackCoinsList] = useState([]);
 
     useEffect(()=>{
       if(pickPosList[0] !== null && pickPosList !== null) 
@@ -388,6 +390,7 @@ export default function ChessBoard()
       let opponentColor = coinColor;
       if(row>=0 && row<=7 && column>=0 && column<=7)
       {
+        opponentColor = checkOpponent(row,column);
         while((row>=0 && column>=0 && chessBoardList[row][column]===null) || (Boolean(opponentColor)===true && coinColor!=opponentColor))
         {
           if(Boolean(opponentColor)=== true && coinColor!=opponentColor)
@@ -414,6 +417,7 @@ export default function ChessBoard()
       opponentColor = coinColor;
       if(row>=0 && row<=7 && column>=0 && column<=7)
       {
+        opponentColor = checkOpponent(row,column);
         while((row>=0 && column<=7 && row<=7 && column>=0 && chessBoardList[row][column]===null) || (Boolean(opponentColor)===true && coinColor!=opponentColor))
         {
           if(Boolean(opponentColor)=== true && coinColor!=opponentColor)
@@ -440,6 +444,7 @@ export default function ChessBoard()
       opponentColor = coinColor;
       if(row>=0 && row<=7 && column>=0 && column<=7)
       {
+        opponentColor = checkOpponent(row,column);
         while((row<=7 && row>=0 && column>=0 && column<=7 && chessBoardList[row][column]===null) || (Boolean(opponentColor)===true && coinColor!=opponentColor))
         {
           if(Boolean(opponentColor)=== true && coinColor!=opponentColor)
@@ -523,22 +528,22 @@ export default function ChessBoard()
             kingList.push([row-1,column-1])
           }
         }
-        if(row+1<=7 || (row+1<=7 && column+1<=7) ||(row+1<=7 && column-1>=7))
+        if(row+1<=7 || (row+1<=7 && column+1<=7) ||(row+1<=7 && column-1>=0))
         {
           let opponentColor = checkOpponent(row+1,column);
           if(chessBoardList[row+1][column]===null || (Boolean(opponentColor) === true && opponentColor!=coinColor))
           {
-            kingList.push([row-1,column]);
+            kingList.push([row+1,column+1]);
           }
           opponentColor = checkOpponent(row+1,column+1);
-          if(chessBoardList[row+1][column+1]===null || (Boolean(opponentColor) === true && opponentColor!=coinColor))
-          {
-            kingList.push([row-1,column+1]);
-          }
-          opponentColor = checkOpponent(row+1,column-1);
           if(chessBoardList[row+1][column-1]===null || (Boolean(opponentColor) === true && opponentColor!=coinColor))
           {
-            kingList.push([row-1,column-1]);
+            kingList.push([row+1,column-1]);
+          }
+          opponentColor = checkOpponent(row+1,column-1);
+          if(chessBoardList[row+1][column]===null || (Boolean(opponentColor) === true && opponentColor!=coinColor))
+          {
+            kingList.push([row+1,column]);
           }
         }
         if(column+1<=7 || column-1>=0)
@@ -609,6 +614,15 @@ export default function ChessBoard()
         } 
         else if(tempList[index][boxindex])
         {
+          let coinColor = chessBoardList[index][boxindex][Object.keys(chessBoardList[index][boxindex])[0]];
+          if(coinColor === 'white')
+          {
+            setShowWhiteCoinsList([...showWhiteCoinsList,tempList[index][boxindex]])
+          }
+          if(coinColor === 'black')
+            {
+              setShowBlackCoinsList([...showBlackCoinsList,tempList[index][boxindex]])
+            }
           tempList[index][boxindex] = tempList[pickPosList[0]][pickPosList[1]];
           tempList[pickPosList[0]][pickPosList[1]] = null;
           setWhitePlayerFlag(!whitePlayerFlag);
@@ -692,6 +706,8 @@ export default function ChessBoard()
     return(
       <center>
         <div className='App'>
+          {/* <div className="coinsAndBoardFlex"> */}
+        <CoinsDisplay list={showWhiteCoinsList} />
         <div className="chessBoardStyle">
             {
                 chessBoardList.map((value,index)=>{ 
@@ -723,6 +739,8 @@ export default function ChessBoard()
                 })
             }
         </div>
+        <CoinsDisplay list={showBlackCoinsList} />
         </div>
+        {/* </div> */}
         </center>)
 }

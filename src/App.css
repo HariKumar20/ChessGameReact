@@ -1,16 +1,24 @@
 .App {
   display: flex;
-  flex-direction: row;
-  justify-content: center; 
+  flex-direction: column;
   align-items: center;
-  width: 100vh;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
 }
+
+.coinsAndBoardFlex
+{
+  display: flex;
+  flex-direction: column;
+}
+
 .chessBoardStyle
 {
   border-width: 10px;
   border: black solid;
-
+  margin-top: 30px;
+  margin-bottom: 30px;
+  overflow: hidden;
 } 
 
 .rowStyle
@@ -74,25 +82,52 @@
   text-shadow: 5px 5px 8px greenyellow;
 }
 
+.coinsDisplayDiv
+{
+  width: 530px;
+  border-width: 3px;
+  border : black solid;
+  background-color: #da9644;
+}
+
+.coinsFlex 
+{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+/* .coinsDisplayFlex
+{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+} */
+
+
 @media screen and (max-width : 620px)
 {
   .App {
     display: flex;
-    flex-direction: row;
-    justify-content: center; 
+    flex-direction: column;
     align-items: center;
-    width: 100%;
-    height: 100%; 
     margin-top: 20px;
-   
+    width: 100%;
+    height: 100%;
   }
-  
+    .coinsAndBoardFlex
+  {
+    display: flex;
+    flex-direction: column;
+  }
   .chessBoardStyle
   {
     border-width: 10px;
     border-radius: 10px;
     border : black solid;
-  
+    margin-top: 20px;
+    margin-bottom: 20px;
+    overflow: hidden;
   } 
   
   .rowStyle
@@ -153,5 +188,12 @@
   font-size: 25px;
   cursor: pointer;
   text-shadow: 5px 5px 5px 5px greenyellow;
+}
+.coinsDisplayDiv
+{
+  width: 300px;
+  border-width: 3px;
+  border : black solid;
+  background-color: #da9644;
 }
 }
